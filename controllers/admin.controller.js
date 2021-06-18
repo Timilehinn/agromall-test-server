@@ -43,7 +43,7 @@ exports.signIn = (req,res) => {
         email:email
       })
     }else if(user.dataValues.password !== password){
-      res.json({auth_msg:"Sorry, that password isn't right.",done:true,session:false,email:email})
+      res.json({auth_msg:"Sorry, that password isn't right. Contact the developer for assistance.",done:true,session:false,email:email})
     }else{
       Admin.findOne({where:{email:email},attributes: {exclude:['password']}}).then(user=>{
         const id = user.dataValues.id
