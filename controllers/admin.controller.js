@@ -15,8 +15,8 @@ exports.createNewUser = (req, res) => {
         password:password,
       }
       Admin.create(user)
-      .then(data => {
-          res.json({msg:'registered successfully, Login to continue.',success:true,data:data});
+      .then(() => {
+          res.json({msg:'registered successfully, Login to continue.',success:true});
       })
       .catch(err => {
         console.log(err)
@@ -40,7 +40,7 @@ exports.signIn = (req,res) => {
     }else if(user.dataValues.password !== password){
       res.json({auth_msg:'password is incorrect',done:true,session:false,email:email})
     }else{
-      User.findOne({where:{email:email},attributes: {exclude:['password']}}).then(user=>{
+      Admin.findOne({where:{email:email},attributes: {exclude:['password']}}).then(user=>{
         const id = user.dataValues.id
         const email = user.dataValues.email
         const token = JWT.sign({id,email}, process.env.JWT_SECRET, {

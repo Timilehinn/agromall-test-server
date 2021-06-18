@@ -7,7 +7,7 @@ module.exports = app => {
     var router = require("express").Router();
 
     router.post('/add',product.createNew)
-    router.post('/all',product.findAll)
+    router.post('/all',product.all)
   
     app.use('/api/product', router);
   };

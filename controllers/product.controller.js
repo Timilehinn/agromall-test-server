@@ -2,10 +2,12 @@ const db = require("../models");
 const { QueryTypes, Sequelize } = require("sequelize")
 const Product = db.products;
 const JWT = require('jsonwebtoken');
+const { products } = require("../models");
 
-exports.addNewProduct = (req, res) => {
-  const { email,fullname,password } = req.body
-      Product.create(product)
+exports.createNew = (req, res) => {
+  console.log(req.body)
+  const { images,name,desc,location,category, } = req.body
+      Product.create(req.body)
       .then(data => {
           res.json({msg:'All products',success:true,done:true,data:data});
       })
@@ -17,3 +19,18 @@ exports.addNewProduct = (req, res) => {
         });
       });
 };
+
+exports.all=(req,res)=>{
+  const { limit,offset } = req.query
+  Product.findALl({
+    order:[
+      ['id','DESC']
+    ],
+    limit,
+    offset,
+  }).then(product=>{
+    res.json({msg:'All products',success:true})
+  }).catch(err=>{
+    res.status(500).json({msg:"An error occurred",success:true});
+  })
+}
