@@ -2,17 +2,19 @@ const db = require("../models");
 const { QueryTypes, Sequelize } = require("sequelize")
 const Admin = db.admin;
 const JWT = require('jsonwebtoken');
+const bcrypt = require('bcrypt')
 
 exports.createNewUser = (req, res) => {
   const { email,fullname,password } = req.body
   Admin.findOne({where:{
     email:email
-  }}).then((_user)=>{
+  }}).then(async(_user)=>{
     if(!_user){ 
+      hashedPassword = await bcrypt.hash(password, 10);
       const user = {
         fullname : fullname,
         email : email.toLowerCase(),
-        password:password,
+        password:hashedPassword,
       }
       Admin.create(user)
       .then(() => {
@@ -34,7 +36,7 @@ exports.createNewUser = (req, res) => {
 
 exports.signIn = (req,res) => {
   const { email,password } = req.body
-  Admin.findOne({where:{email:email}}).then((user)=>{
+  Admin.findOne({where:{email:email}}).then(async(user)=>{
     if(!user){
       res.json({
         auth_msg:"Sorry, we couldn't find any account with that email address. Contact the developer for assistance.",
@@ -42,16 +44,25 @@ exports.signIn = (req,res) => {
         session:false,
         email:email
       })
-    }else if(user.dataValues.password !== password){
-      res.json({auth_msg:"Sorry, that password isn't right. Contact the developer for assistance.",done:true,session:false,email:email})
-    }else{
-      Admin.findOne({where:{email:email},attributes: {exclude:['password']}}).then(user=>{
-        const id = user.dataValues.id
-        const email = user.dataValues.email
-        const token = JWT.sign({id,email}, process.env.JWT_SECRET, {
-          expiresIn:'1d',
-        })
-        res.json({auth_msg:'login successful.',email,done:true, session:true,token:token,details:user.dataValues})
+    }else {
+      bcrypt.compare(password, user.dataValues.password,(err,match)=>{
+      console.log('user found')
+        if(err){
+          console.log('Sorry, something went wrong, Try logging in again.')
+        }
+        if(match){
+          Admin.findOne({where:{email:email},attributes: {exclude:['password']}}).then(user=>{
+            const id = user.dataValues.id
+            const email = user.dataValues.email
+            const token = JWT.sign({id,email}, process.env.JWT_SECRET, {
+              expiresIn:'1d',
+            })
+            res.json({auth_msg:'login successful.',email,done:true, session:true,token:token,details:user.dataValues})
+          })
+        }else{
+          res.json({auth_msg:"Sorry, that password isn't right. Contact the developer for assistance.",done:true,session:false,email:email})
+          
+        }
       })
     }
   })
