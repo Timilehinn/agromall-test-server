@@ -1,6 +1,6 @@
 const db = require("../models");
 const { QueryTypes, Sequelize } = require("sequelize")
-const User = db.users;
+const User = db.admin;
 const JWT = require('jsonwebtoken');
 
 exports.createNewUser = (req, res) => {
