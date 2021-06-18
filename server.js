@@ -33,5 +33,5 @@ app.use(cors(corsOptions));
 // });
 db.sequelize.sync();
 require("./routes/admin.routes.js")(app);
-require("./routes/product.routes.js")(app);
+require("./routes/market.routes.js")(app);
 app.listen(PORT, () => console.log("server running on port:" + PORT));

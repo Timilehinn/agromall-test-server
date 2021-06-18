@@ -2,7 +2,7 @@ const { Sequelize, Op, Model, DataTypes } = require("sequelize")
 const { v4 } = require("uuid");
 
 module.exports = (sequelize, Sequelize) => {
-    const Product = sequelize.define("product", {
+    const Market = sequelize.define("market", {
       id:{
         allowNull: false,
         primaryKey: true,
@@ -30,5 +30,5 @@ module.exports = (sequelize, Sequelize) => {
         allowNull: false,
       },
     });
-    return Product;
+    return Market;
   };
