@@ -8,7 +8,7 @@ module.exports = app => {
 
     router.post('/register',admin.createNewUser)
     router.post('/login',admin.signIn)
-    router.get('/isuserauth', verifyJWT, users.isUserAuth)
+    router.get('/isuserauth', verifyJWT, admin.isUserAuth)
   
     app.use('/api/admin', router);
   };
