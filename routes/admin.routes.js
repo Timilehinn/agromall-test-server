@@ -6,8 +6,8 @@ module.exports = app => {
   
     var router = require("express").Router();
 
-    router.post('/signup',admin.createNewUser)
-    router.post('/signin',admin.signIn)
+    router.post('/register',admin.createNewUser)
+    router.post('/login',admin.signIn)
   
     app.use('/api/admin', router);
   };
