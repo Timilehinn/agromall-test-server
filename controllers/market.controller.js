@@ -1,6 +1,6 @@
 const db = require("../models");
 const { QueryTypes, Sequelize } = require("sequelize")
-const Market = db.products;
+const Market = db.markets;
 const JWT = require('jsonwebtoken');
 
 exports.createNew = (req, res) => {
