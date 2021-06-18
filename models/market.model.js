@@ -26,8 +26,9 @@ module.exports = (sequelize, Sequelize) => {
         allowNull: false,
       },
       category: {
-        type: DataTypes.TEXT,
+        type: DataTypes.JSONB,
         allowNull: false,
+        defaultValue:[]
       },
     });
     return Market;
