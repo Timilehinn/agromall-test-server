@@ -21,7 +21,7 @@ exports.all=(req,res)=>{
   const { limit,offset } = req.query
   Market.findAll({
     order:[
-      ['id','DESC']
+      ['createdAt','DESC']
     ],
     limit,
     offset,
@@ -48,9 +48,15 @@ exports.update=(req,res)=>{
   const { id, name, desc, location  } = req.body;
   Market.update({
     name,desc,location,
-  },{where:{id}})
-  .then(()=>{
-    res.json({msg:'Market details successfully updated',success:true})
+  },{where:{id},returning:true})
+  .then(data=>{
+    Market.findAll({})
+    .then(data=>{
+        res.json({msg:'Market details successfully updated',market:data,success:true})
+    })
+    .catch(err=>{
+      res.json({msg:"Something went wrong. Try refreshin the page",success:false}).status(500)
+    })
   })
   .catch(err=>{
     res.status(500).json({msg:'An error occurred',success:false})
@@ -65,9 +71,15 @@ exports.delete=(req,res)=>{
   markets.forEach(m => {
     ids.push(m.id)
   });
-  Market.destroy({where:{id:ids}})
+  Market.destroy({where:{id:ids},returning:true})
   .then(()=>{
-    res.json({msg:`ids.length market delete.`,success:true})
+    Market.findAll({})
+    .then(data=>{
+       res.json({msg:`${ids.length} Market(s) Deleted.`,success:true,markets:data})
+    })
+    .catch(err=>{
+      res.json({msg:"Something went wrong. Try refreshin the page",success:false}).status(500)
+    })
   })
   .catch(err=>{
     console.log(err)
