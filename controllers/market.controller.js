@@ -4,8 +4,6 @@ const Market = db.markets;
 const JWT = require('jsonwebtoken');
 
 exports.createNew = (req, res) => {
-  console.log(req.body)
-  const { images,name,desc,location,category, } = req.body
       Market.create(req.body)
       .then(data => {
           res.json({msg:'Market data created.',success:true,done:true,data:data});
@@ -43,5 +41,20 @@ exports.one=(req,res)=>{
     res.json({msg:'Market',success:true,market})
   }).catch(err=>{
     res.status(500).json({msg:"An error occurred",success:true,market:[]});
+  })
+}
+
+exports.update=(req,res)=>{
+  const { id, name, desc, location  } = req.body;
+  Mark.update({
+    name,desc,location,
+    where:{id}
+  })
+  .then(()=>{
+    res.json({msg:'Market details successfully updated',success:true})
+  })
+  .catch(err=>{
+    res.status(500).json({msg:'An error occurred',success:false})
+    console.log(err)
   })
 }

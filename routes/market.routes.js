@@ -7,6 +7,7 @@ module.exports = app => {
     var router = require("express").Router();
 
     router.post('/add',market.createNew)
+    router.post('/update',market.update)
     router.get('/all',market.all)
     router.get('/one',market.one)
   
