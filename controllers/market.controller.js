@@ -33,3 +33,15 @@ exports.all=(req,res)=>{
     res.status(500).json({msg:"An error occurred",success:true,market:[]});
   })
 }
+
+
+exports.one=(req,res)=>{
+  const { id }= req.query
+  Market.findOne({
+    where:{id}
+  }).then(market=>{
+    res.json({msg:'Market',success:true,market})
+  }).catch(err=>{
+    res.status(500).json({msg:"An error occurred",success:true,market:[]});
+  })
+}
