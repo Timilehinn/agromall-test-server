@@ -8,6 +8,7 @@ module.exports = app => {
 
     router.post('/add',market.createNew)
     router.post('/update',market.update)
+    router.post('/delete',market.delete)
     router.get('/all',market.all)
     router.get('/one',market.one)
   

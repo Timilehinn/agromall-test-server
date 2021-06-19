@@ -48,8 +48,7 @@ exports.update=(req,res)=>{
   const { id, name, desc, location  } = req.body;
   Market.update({
     name,desc,location,
-    where:{id}
-  })
+  },{where:{id}})
   .then(()=>{
     res.json({msg:'Market details successfully updated',success:true})
   })
@@ -57,4 +56,9 @@ exports.update=(req,res)=>{
     res.status(500).json({msg:'An error occurred',success:false})
     console.log(err)
   })
+}
+
+exports.delete=(req,res)=>{
+  const { selection } = req.body;
+  console.log(selection.length)
 }
