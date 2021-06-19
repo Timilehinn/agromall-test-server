@@ -8,6 +8,7 @@ module.exports = app => {
 
     router.post('/add',market.createNew)
     router.get('/all',market.all)
+    router.get('/one',market.one)
   
     app.use('/api/market', router);
   };
