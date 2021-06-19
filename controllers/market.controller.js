@@ -59,6 +59,19 @@ exports.update=(req,res)=>{
 }
 
 exports.delete=(req,res)=>{
-  const { selection } = req.body;
-  console.log(selection.length)
+  const { markets } = req.body;
+  console.log(markets.length)
+  const ids = []
+  markets.forEach(m => {
+    ids.push(m.id)
+  });
+  Market.destroy({where:{id:ids}})
+  .then(()=>{
+    res.json({msg:`ids.length market delete.`,success:true})
+  })
+  .catch(err=>{
+    console.log(err)
+    res.json({msg:"Something went wrong while deleting market.",success:false}).status(500)
+  })
+  // console.log(ids)
 }
