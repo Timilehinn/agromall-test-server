@@ -8,28 +8,28 @@ exports.createNew = (req, res) => {
   const { images,name,desc,location,category, } = req.body
       Market.create(req.body)
       .then(data => {
-          res.json({msg:'All markets',success:true,done:true,data:data});
+          res.json({msg:'Market data created.',success:true,done:true,data:data});
       })
       .catch(err => {
         console.log(err)
         res.status(500).send({
           message:
-            err.message || "Error finding markets."
+            err.message || "Error finding markets.",success:false
         });
       });
 };
 
 exports.all=(req,res)=>{
   const { limit,offset } = req.query
-  Market.findALl({
+  Market.findAll({
     order:[
       ['id','DESC']
     ],
     limit,
     offset,
-  }).then(product=>{
-    res.json({msg:'All markets',success:true})
+  }).then(market=>{
+    res.json({msg:'All markets',success:true,market})
   }).catch(err=>{
-    res.status(500).json({msg:"An error occurred",success:true});
+    res.status(500).json({msg:"An error occurred",success:true,market:[]});
   })
 }
