@@ -46,7 +46,7 @@ exports.one=(req,res)=>{
 
 exports.update=(req,res)=>{
   const { id, name, desc, location  } = req.body;
-  Mark.update({
+  Market.update({
     name,desc,location,
     where:{id}
   })
