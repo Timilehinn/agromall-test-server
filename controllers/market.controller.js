@@ -74,6 +74,21 @@ exports.update=(req,res)=>{
     name,desc,location,
   },{where:{id},returning:true})
   .then(data=>{
+    const newdata =  {index:'agromallmarket',type:'markets_list',id:"65682dd9-d2ea-475f-a04a-8ddde5620044",
+        body:{
+            doc:{ name: name, desc: desc, location: location }
+        }
+    }
+    client.update(newdata, function (error, response) {
+          client.get({ index: 'agromallmarket', type: 'markets_list', id: id }, function(err, resource) {
+          if(error){
+              console.log(error)
+          }
+          if(resource){
+              console.log(resource)
+          }
+        }
+    });
     Market.findAll({})
     .then(data=>{
         res.json({msg:'Market details successfully updated',market:data,success:true})
