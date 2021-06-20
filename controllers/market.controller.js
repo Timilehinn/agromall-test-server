@@ -141,7 +141,10 @@ exports.search=(req,res)=>{
     type: 'markets_list',
     body: {
       query: {
-        match: { "name": req.query.q }
+        multi_match: { 
+          "query": req.query.q,
+          "feilds":["name","location","desc"]
+        }
       },
     }
   }, function (error, response,status) {
