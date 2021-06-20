@@ -125,7 +125,7 @@ exports.sync=(req,res)=>{
       client.bulk({body:bulk}, function( error, response  ){
         if( error ){
           console.log(error)
-          res.json({msg:error.messages || "Error syncing markets with database", success:false)
+          res.json({msg:error.messages || "Error syncing markets with database", success:false})
         } else {
           console.log(response);
           res.json({msg:'Search results updated, Search will now show newer markets.' success:true})
