@@ -74,7 +74,7 @@ exports.update=(req,res)=>{
     name,desc,location,
   },{where:{id},returning:true})
   .then(data=>{
-    const newdata =  {index:'agromallmarket',type:'markets_list',id:"65682dd9-d2ea-475f-a04a-8ddde5620044",
+    const newdata =  {index:'agromallmarket',type:'markets_list',id:id,
         body:{
             doc:{ name: name, desc: desc, location: location }
         }
