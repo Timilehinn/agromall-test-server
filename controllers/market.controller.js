@@ -142,9 +142,11 @@ exports.search=(req,res)=>{
     body: {
       query: {
         // match: { "name": req.query.q }
-        "multi_match" : {
-          "query":    req.query.q, 
-          "fields": [ "name", "desc" ] 
+        "bool": {
+          "should": [
+            { "match": { "name":  req.query.q }},
+            { "match": { "desc": req.query.q   }}
+          ]
         }
     }
   }, function (error, response,status) {
