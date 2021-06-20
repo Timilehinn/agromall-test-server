@@ -12,7 +12,7 @@ module.exports = app => {
     router.get('/all',market.all)
     router.get('/one',market.one)
     router.get('/search',market.search)
-    router.post('/sync-searchengine',marke.resync)
+    router.post('/sync-searchengine',market.sync)
   
     app.use('/api/market', router);
   };
