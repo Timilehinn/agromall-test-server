@@ -81,13 +81,13 @@ exports.update=(req,res)=>{
     }
     client.update(newdata, function (error, response) {
           client.get({ index: 'agromallmarket', type: 'markets_list', id: id }, function(err, resource) {
-          if(error){
-              console.log(error)
-          }
-          if(resource){
-              console.log(resource)
-          }
-        }
+            if(error){
+                console.log(error)
+            }
+            if(resource){
+                console.log(resource)
+            }
+        })
     });
     Market.findAll({})
     .then(data=>{
