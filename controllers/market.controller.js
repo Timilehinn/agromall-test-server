@@ -3,7 +3,7 @@ const { QueryTypes, Sequelize } = require("sequelize")
 const Market = db.markets;
 const JWT = require('jsonwebtoken');
 const elasticsearch = require('elasticsearch');
-const bonsai_url = process.env.BONASI_URL
+const bonsai_url = process.env.BONSAI_URL
 
 const client = new elasticsearch.Client({
     hosts: bonsai_url,
