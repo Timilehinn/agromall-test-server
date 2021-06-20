@@ -85,7 +85,7 @@ exports.update=(req,res)=>{
                 console.log(error)
             }
             if(resource){
-                console.log(resource)
+                console.log(response)
             }
         })
     });
