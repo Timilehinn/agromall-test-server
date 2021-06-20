@@ -121,8 +121,25 @@ exports.delete=(req,res)=>{
   Market.destroy({where:{id:ids},returning:true})
   .then(()=>{
     Market.findAll({})
-    .then(data=>{
-       res.json({msg:`${ids.length} Market(s) Deleted.`,success:true,markets:data})
+    .then(async data=>{
+      await client.deleteByQuery({
+        index: "agromallmarket",
+        type: "markets_list",
+        body: {
+          query: {
+            terms: {
+              _id: ids
+            }
+          }
+        }
+      })
+      .then(res=>{console.log('deleteed from elasticsearch docs')},
+      (err)=>{
+        console.log('error occurred while deleting from elasticsearch docs')
+        console.log(err)
+      })
+  res.json({msg:`${ids.length} Market(s) Deleted.`,success:true,markets:data})
+
     })
     .catch(err=>{
       res.json({msg:"Something went wrong. Try refreshin the page",success:false}).status(500)
