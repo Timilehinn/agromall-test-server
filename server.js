@@ -21,6 +21,10 @@ app.use(
 );
 app.use(express.json({ limit: "50mb" }));
 
+app.get('/',(req,res)=>{
+  res.send('THIS IS A TEST SERVER')
+})
+
 app.get('/isUserAuth',cors(corsOptions), verifyJWT, (req,res)=>{
   res.json({msg:'you are authorised', authenticated:true})
   console.log('jwt verified')
