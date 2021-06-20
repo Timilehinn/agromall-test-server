@@ -140,8 +140,11 @@ exports.search=(req,res)=>{
     index: 'agromallmarket',
     type: 'markets_list',
     body: {
-      query: {
-        match: { "name": req.query.q }
+      "query": {
+        "multi_match" : {
+          "query":    req.query.q, 
+          "fields": [ "name", "desc" ] 
+        }
       }
     }
   }, function (error, response,status) {
@@ -157,8 +160,9 @@ exports.search=(req,res)=>{
       })
     };
   }
-})
+)
 }
+
 
   // client.ping({
   //   requestTimeout: 30000,
