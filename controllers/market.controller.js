@@ -96,35 +96,74 @@ exports.delete=(req,res)=>{
   // console.log(ids)
 }
 
+exports.sync=(req,res)=>{
+  (async () => {
+      let bulk = [];
+      const markets = await Market.findAll()
+
+      markets.forEach((market, i) => {
+
+        let data = {
+          id: market.id,
+          name: market.name,
+          images:market.images,
+          desc: market.desc,
+          category:market.category,
+          location: market.location,
+        }
+
+        bulk.push({index:{
+                _index:"agromallmarket",
+                _type:"markets_list",
+                _id: market.id
+            }
+        })
+
+        bulk.push(data)
+      });
+
+      client.bulk({body:bulk}, function( error, response  ){
+        if( error ){
+          console.log(error)
+          res.json({msg:error.messages || "Error syncing markets with database", success:false)
+        } else {
+          console.log(response);
+          res.json({msg:'Search results updated, Search will now show newer markets.' success:true})
+        }
+      });
+  })();
+
+}
+
 exports.search=(req,res)=>{
-  // client.search({
-  //   index: 'agromallmarket',
-  //   type: 'markets_list',
-  //   body: {
-  //     query: {
-  //       match: { "name": req.query.q }
-  //     },
-  //   }
-  // }, function (error, response,status) {
-  //   if (error){
-  //     console.log(error)
-  //     res.json({msg:'uhmm, We could not process your search, try again.',success:false}).status(500)
-  //   }
-  //   else {
-  //     res.json({msg:'Search available',success:true,markets:response.hits.hits})
-  //     console.log(response);
-  //     response.hits.hits.forEach(function(hit){
-  //       console.log(hit);
-  //     })
-  //   }
-  // });
-  client.ping({
-    requestTimeout: 30000,
-  }, function (error) {
-    if (error) {
-      res.json({msg:'agromall elastic search test falied',success:false,error});
-    } else {
-      res.json({msg:'search engin active',success:true});
+  client.search({
+    index: 'agromallmarket',
+    type: 'markets_list',
+    body: {
+      query: {
+        match: { "name": req.query.q }
+      },
+    }
+  }, function (error, response,status) {
+    if (error){
+      console.log(error)
+      res.json({msg:'uhmm, We could not process your search, try again.',success:false}).status(500)
+    }
+    else {
+      res.json({msg:'Search results available',success:true,markets:response.hits.hits})
+      console.log(response);
+      response.hits.hits.forEach(function(hit){
+        console.log(hit);
+      })
     }
   });
+  // client.ping({
+  //   requestTimeout: 30000,
+  // }, function (error) {
+  //   if (error) {
+  //     res.json({msg:'agromall elastic search test falied',success:false,error});
+  //   } else {
+  //     res.json({msg:'search engin active',success:true});
+  //   }
+  // });
 }
