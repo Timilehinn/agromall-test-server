@@ -3,9 +3,11 @@ const { QueryTypes, Sequelize } = require("sequelize")
 const Market = db.markets;
 const JWT = require('jsonwebtoken');
 const elasticsearch = require('elasticsearch');
+const bonsai_url = process.env.BONASI_URL
 
 const client = new elasticsearch.Client({
-    hosts: [ 'http://localhost:9200']
+    hosts: bonsai_url,
+    log: 'trace'
 });
 
 
@@ -95,25 +97,34 @@ exports.delete=(req,res)=>{
 }
 
 exports.search=(req,res)=>{
-  client.search({
-    index: 'agromallmarket',
-    type: 'markets_list',
-    body: {
-      query: {
-        match: { "name": req.query.q }
-      },
-    }
-  }, function (error, response,status) {
-    if (error){
-      console.log(error)
-      res.json({msg:'uhmm, We could not process your search, try again.',success:false}).status(500)
-    }
-    else {
-      res.json({msg:'Search available',success:true,markets:response.hits.hits})
-      console.log(response);
-      response.hits.hits.forEach(function(hit){
-        console.log(hit);
-      })
+  // client.search({
+  //   index: 'agromallmarket',
+  //   type: 'markets_list',
+  //   body: {
+  //     query: {
+  //       match: { "name": req.query.q }
+  //     },
+  //   }
+  // }, function (error, response,status) {
+  //   if (error){
+  //     console.log(error)
+  //     res.json({msg:'uhmm, We could not process your search, try again.',success:false}).status(500)
+  //   }
+  //   else {
+  //     res.json({msg:'Search available',success:true,markets:response.hits.hits})
+  //     console.log(response);
+  //     response.hits.hits.forEach(function(hit){
+  //       console.log(hit);
+  //     })
+  //   }
+  // });
+  client.ping({
+    requestTimeout: 30000,
+  }, function (error) {
+    if (error) {
+      res.json({msg:'agromall elastic search test falied',success:false,err});
+    } else {
+      res.json({msg:'search engin active',success:true});
     }
   });
 }
