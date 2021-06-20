@@ -122,7 +122,7 @@ exports.search=(req,res)=>{
     requestTimeout: 30000,
   }, function (error) {
     if (error) {
-      res.json({msg:'agromall elastic search test falied',success:false,err});
+      res.json({msg:'agromall elastic search test falied',success:false,error});
     } else {
       res.json({msg:'search engin active',success:true});
     }
