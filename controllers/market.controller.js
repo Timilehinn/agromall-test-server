@@ -2,6 +2,12 @@ const db = require("../models");
 const { QueryTypes, Sequelize } = require("sequelize")
 const Market = db.markets;
 const JWT = require('jsonwebtoken');
+const elasticsearch = require('elasticsearch');
+
+const client = new elasticsearch.Client({
+    hosts: [ 'http://localhost:9200']
+});
+
 
 exports.createNew = (req, res) => {
       Market.create(req.body)
@@ -86,4 +92,28 @@ exports.delete=(req,res)=>{
     res.json({msg:"Something went wrong while deleting market.",success:false}).status(500)
   })
   // console.log(ids)
+}
+
+exports.search=(req,res)=>{
+  client.search({
+    index: 'agromallmarket',
+    type: 'markets_list',
+    body: {
+      query: {
+        match: { "name": req.query.q }
+      },
+    }
+  }, function (error, response,status) {
+    if (error){
+      console.log(error)
+      res.json({msg:'uhmm, We could not process your search, try again.',success:false}).status(500)
+    }
+    else {
+      res.json({msg:'Search available',success:true,markets:response.hits.hits})
+      console.log(response);
+      response.hits.hits.forEach(function(hit){
+        console.log(hit);
+      })
+    }
+  });
 }

@@ -11,6 +11,7 @@ module.exports = app => {
     router.post('/delete',market.delete)
     router.get('/all',market.all)
     router.get('/one',market.one)
+    router.get('/search',market.search)
   
     app.use('/api/market', router);
   };
