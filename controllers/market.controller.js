@@ -3,7 +3,8 @@ const { QueryTypes, Sequelize } = require("sequelize")
 const Market = db.markets;
 const JWT = require('jsonwebtoken');
 const elasticsearch = require('elasticsearch');
-const bonsai_url = process.env.BONSAI_URL
+const bonsai_url = process.env.BONSAI_URL;
+const { v4 } = require('uuid');
 
 const client = new elasticsearch.Client({
     hosts: bonsai_url,
@@ -13,8 +14,23 @@ const client = new elasticsearch.Client({
 
 exports.createNew = (req, res) => {
       Market.create(req.body)
-      .then(data => {
+      .then(async data=> {
           res.json({msg:'Market data created.',success:true,done:true,data:data});
+          const response = await client.update({
+            index: 'agromallmarket',
+            type: 'markets_list',
+            id: v4(),
+            body: {
+              doc: {
+                name: req.body.name,
+                images:req.body.images,
+                category:req.body.category,
+                desc:req.body.desc,
+                location:req.body.location
+              },
+              doc_as_upsert: true
+            }
+          });
       })
       .catch(err => {
         console.log(err)
@@ -154,10 +170,6 @@ exports.search=(req,res)=>{
     }
     else {
       res.json({msg:'Search results available',success:true,markets:response.hits.hits})
-      console.log(response);
-      response.hits.hits.forEach(function(hit){
-        console.log(hit);
-      })
     };
   }
 )
