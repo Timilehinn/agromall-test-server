@@ -128,7 +128,7 @@ exports.sync=(req,res)=>{
           res.json({msg:error.messages || "Error syncing markets with database", success:false})
         } else {
           console.log(response);
-          res.json({msg:'Search results updated, Search will now show newer markets.' success:true})
+          res.json({msg:'Search results updated, Search will now show newer markets.', success:true})
         }
       });
   })();
