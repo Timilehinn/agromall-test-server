@@ -159,7 +159,9 @@ exports.search=(req,res)=>{
                 location: req.query.q,
               }
             }
-      },
+          ]
+        }
+       
     }
   }, function (error, response,status) {
     if (error){
@@ -172,8 +174,11 @@ exports.search=(req,res)=>{
       response.hits.hits.forEach(function(hit){
         console.log(hit);
       })
-    }
-  });
+    };
+  }
+})
+}
+
   // client.ping({
   //   requestTimeout: 30000,
   // }, function (error) {
@@ -183,4 +188,4 @@ exports.search=(req,res)=>{
   //     res.json({msg:'search engin active',success:true});
   //   }
   // });
-}
+
