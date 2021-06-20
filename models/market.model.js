@@ -7,10 +7,10 @@ module.exports = (sequelize, Sequelize) => {
         allowNull: false,
         primaryKey: true,
         type: DataTypes.TEXT,
- 	      defaultValue: Sequelize.UUIDV4
+ 	      defaultValue: Sequelize.UUIDV4 // incase theres is an issue with uuid from the front end.
       },
       images:{
-        type:DataTypes.JSONB, // NOT REALLY EFFECIENT BUT WILL WORK WELL FOR SMALL PROJECTS
+        type:DataTypes.JSONB, //STORING IMAGES AS BASE46, NOT REALLY EFFECIENT BUT WILL WORK WELL FOR SMALL PROJECTS
         defaultValue:[],
       },
       name: {

@@ -13,13 +13,21 @@ const client = new elasticsearch.Client({
 
 
 exports.createNew = (req, res) => {
-      Market.create(req.body)
+      Market.create({
+          //sending UUID from the front end, so elastic search will have acces to the uuid on its end
+          id:req.body.id,
+          name: req.body.name,
+          images:req.body.images,
+          category:req.body.category,
+          desc:req.body.desc,
+          location:req.body.location
+        })
       .then(async data=> {
           res.json({msg:'Market data created.',success:true,done:true,data:data});
           const response = await client.update({
             index: 'agromallmarket',
             type: 'markets_list',
-            id: v4(),
+            id: req.body.id,  // same is gotten from the frontend will stored here
             body: {
               doc: {
                 name: req.body.name,

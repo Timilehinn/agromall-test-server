@@ -32,10 +32,10 @@ app.get('/isUserAuth',cors(corsOptions), verifyJWT, (req,res)=>{
 
 const db = require("./models");
 app.use(cors(corsOptions));
-// db.sequelize.sync({ force: true }).then(() => {
-  // console.log("Drop and re-sync db.");
-// });
-db.sequelize.sync();
+db.sequelize.sync({ force: true }).then(() => {
+  console.log("Drop and re-sync db.");
+});
+// db.sequelize.sync();
 require("./routes/admin.routes.js")(app);
 require("./routes/market.routes.js")(app);
 app.listen(PORT, () => console.log("server running on port:" + PORT));
