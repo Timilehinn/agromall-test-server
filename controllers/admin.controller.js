@@ -40,7 +40,7 @@ exports.signIn = (req,res) => {
   Admin.findOne({where:{email:email}}).then(async(user)=>{
     if(!user){
       res.json({
-        auth_msg:"Sorry, we couldn't find any account with that email address. If the issue persists, contact the developer for assistance.",
+        auth_msg:"Sorry, we couldn't find any account with that email address. If this issue persists, contact the developer for assistance.",
         done:true,
         session:false,
         email:email
@@ -61,7 +61,7 @@ exports.signIn = (req,res) => {
             res.json({auth_msg:'login successful.',email,done:true, session:true,token:token,details:user.dataValues})
           })
         }else{
-          res.json({auth_msg:"Sorry, that password isn't right. If the issue persists, contact the developer for assistance.",done:true,session:false,email:email})
+          res.json({auth_msg:"Sorry, that password isn't right. If this issue persists, contact the developer for assistance.",done:true,session:false,email:email})
           
         }
       })
