@@ -4,42 +4,43 @@ const Admin = db.admin;
 const JWT = require('jsonwebtoken');
 const bcrypt = require('bcrypt')
 
-exports.createNewUser = (req, res) => {
-  const { email,fullname,password } = req.body
-  Admin.findOne({where:{
-    email:email
-  }}).then(async(_user)=>{
-    if(!_user){ 
-      hashedPassword = await bcrypt.hash(password, 10);
-      const user = {
-        fullname : fullname,
-        email : email.toLowerCase(),
-        password:hashedPassword,
-      }
-      Admin.create(user)
-      .then(() => {
-          res.json({msg:'registered successfully, Login to continue.',success:true});
-      })
-      .catch(err => {
-        console.log(err)
-        res.status(500).send({
-          message:
-            err.message || "Error occurred while creating account."
-        });
-      });
-    }else{
-        console.log('Username/Email already registered')
-        res.json({msg:'Username/Email is already registered, try loggin in',success:false})
-    }
-  })
-};
+//IF ADMINS HAVE RIGHT TO ADD OTHER ADMINS
+// exports.createNewUser = (req, res) => {
+//   const { email,fullname,password } = req.body
+//   Admin.findOne({where:{
+//     email:email
+//   }}).then(async(_user)=>{
+//     if(!_user){ 
+//       hashedPassword = await bcrypt.hash(password, 10);
+//       const user = {
+//         fullname : fullname,
+//         email : email.toLowerCase(),
+//         password:hashedPassword,
+//       }
+//       Admin.create(user)
+//       .then(() => {
+//           res.json({msg:'registered successfully, Login to continue.',success:true});
+//       })
+//       .catch(err => {
+//         console.log(err)
+//         res.status(500).send({
+//           message:
+//             err.message || "Error occurred while creating account."
+//         });
+//       });
+//     }else{
+//         console.log('Username/Email already registered')
+//         res.json({msg:'Username/Email is already registered, try loggin in',success:false})
+//     }
+//   })
+// };
 
 exports.signIn = (req,res) => {
   const { email,password } = req.body
   Admin.findOne({where:{email:email}}).then(async(user)=>{
     if(!user){
       res.json({
-        auth_msg:"Sorry, we couldn't find any account with that email address. Contact the developer for assistance.",
+        auth_msg:"Sorry, we couldn't find any account with that email address. If the issue persists, contact the developer for assistance.",
         done:true,
         session:false,
         email:email
@@ -60,7 +61,7 @@ exports.signIn = (req,res) => {
             res.json({auth_msg:'login successful.',email,done:true, session:true,token:token,details:user.dataValues})
           })
         }else{
-          res.json({auth_msg:"Sorry, that password isn't right. Contact the developer for assistance.",done:true,session:false,email:email})
+          res.json({auth_msg:"Sorry, that password isn't right. If the issue persists, contact the developer for assistance.",done:true,session:false,email:email})
           
         }
       })
