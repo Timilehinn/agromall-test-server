@@ -209,7 +209,7 @@ exports.search=(req,res)=>{
       res.json({msg:'uhmm, We could not process your search, try again.',success:false}).status(500)
     }
     else {
-      res.json({msg:'Search found',info:'Showing results for',query:req.query.q,success:true,markets:response.hits.hits})
+      res.json({msg:'Search found',info:`Showing ${response.hits.hits.length} result(s) for`,query:req.query.q,success:true,markets:response.hits.hits})
     };
   }
 )
