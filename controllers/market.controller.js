@@ -21,7 +21,9 @@ exports.createNew = (req, res) => {
           images:req.body.images,
           category:req.body.category,
           desc:req.body.desc,
-          location:req.body.location
+          location:req.body.location,
+          lat:req.body.lat,
+          long:req.body.long
         })
       .then(async data=> {
           res.json({msg:'Market data created.',success:true,done:true,data:data});

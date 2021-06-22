@@ -25,6 +25,12 @@ module.exports = (sequelize, Sequelize) => {
         type: DataTypes.TEXT,
         allowNull: false,
       },
+      lat:{
+        type:DataTypes.DECIMAL(10,8)
+      },
+      long:{
+        type:DataTypes.DECIMAL(11,8)
+      },
       category: {
         type: DataTypes.JSONB,
         allowNull: false,
