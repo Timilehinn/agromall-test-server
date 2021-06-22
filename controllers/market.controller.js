@@ -6,6 +6,7 @@ const elasticsearch = require('elasticsearch');
 const bonsai_url = process.env.BONSAI_URL;
 const { v4 } = require('uuid');
 
+// connection to bonsai elastic search server
 const client = new elasticsearch.Client({
     hosts: bonsai_url,
     log: 'trace'
@@ -14,7 +15,7 @@ const client = new elasticsearch.Client({
 
 exports.createNew = (req, res) => {
       Market.create({
-          //sending UUID from the front end, so elastic search will have acces to the uuid on its end
+          //sending UUID from the front end, so elastic search will have access to thesame uuid on its end
           id:req.body.id,
           name: req.body.name,
           images:req.body.images,
@@ -82,6 +83,7 @@ exports.update=(req,res)=>{
     name,desc,location,
   },{where:{id},returning:true})
   .then(data=>{
+    // updates the indexed docs on elasticsearch
     const newdata =  {index:'agromallmarket',type:'markets_list',id:id,
         body:{
             doc:{ name: name, desc: desc, location: location }
@@ -199,7 +201,8 @@ exports.search=(req,res)=>{
       "query": {
         "multi_match" : {
           "query":    req.query.q, 
-          "fields": [ "name", "desc" ] 
+          "fields": [ "name", "desc" ],
+          "fuzziness": "AUTO" 
         }
       }
     }
